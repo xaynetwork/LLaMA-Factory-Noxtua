@@ -1,0 +1,10 @@
+### model
+model_name_or_path: zai-org/GLM-4.5-Air-Base
+adapter_name_or_path: saves/GLM-4.5-Air-Base/lora/16-dpo
+#template: sharegpt
+finetuning_type: lora
+
+### export
+export_dir: models/glm-16-dpo
+export_device: auto
+export_legacy_format: false

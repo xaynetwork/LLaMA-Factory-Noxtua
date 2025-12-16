@@ -1,0 +1,10 @@
+### model
+model_name_or_path: zai-org/GLM-4.5-Air
+adapter_name_or_path: saves/GLM-4.5-Air/lora/subagent
+#template: sharegpt
+finetuning_type: lora
+
+### export
+export_dir: merged/test
+export_device: auto
+export_legacy_format: false

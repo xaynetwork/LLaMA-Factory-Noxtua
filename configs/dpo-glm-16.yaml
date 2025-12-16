@@ -1,0 +1,59 @@
+finetuning_type: lora
+model_name_or_path: zai-org/GLM-4.5-Air-Base
+trust_remote_code: true
+stage: dpo
+do_train: true
+bf16: true
+output_dir: saves/GLM-4.5-Air-Base/lora/16-dpo
+save_steps: 500
+save_total_limit: 1
+
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 2
+create_new_adapter: true
+cutoff_len: 32192
+
+dataset:
+  - ultrafeedback
+
+val_size: 0.7
+overwrite_cache: true
+
+preprocessing_num_workers: 16
+dataloader_num_workers: 4
+dataset_dir: data
+
+enable_thinking: false
+plot_loss: true
+
+learning_rate: 5e-5
+logging_steps: 5
+
+lora_alpha: 16
+lora_dropout: 0.05
+lora_rank: 16
+lora_target: 'all'
+
+lr_scheduler_type: cosine
+warmup_steps: 50
+mask_history: false
+max_grad_norm: 1.0
+max_samples: 100000
+num_train_epochs: 1.0
+packing: false
+
+report_to: wandb
+run_name: test-glm-16
+
+resize_vocab: false
+train_on_prompt: false
+
+per_device_eval_batch_size: 4
+eval_steps: 120
+save_strategy: steps
+#eval_strategy: steps
+
+
+deepspeed: examples/deepspeed/ds_z3_config.json
+
+#/home/mryakhovskiy/LLaMA-Factory/saves/GLM-4.5-Air-Base/lora/test/checkpoint-570

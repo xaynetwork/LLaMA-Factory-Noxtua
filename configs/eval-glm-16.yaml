@@ -1,0 +1,48 @@
+# The batch generation can be SLOW using this config.
+# For faster inference, we recommend to use `scripts/vllm_infer.py`.
+
+### model
+model_name_or_path: models/glm-16
+#adapter_name_or_path: saves/GLM-4.5-Air-Base/lora/16
+trust_remote_code: true
+#finetuning_type: lora
+
+### output
+output_dir: saves/GLM-4.5-Air-Base/lora/16/eval
+overwrite_output_dir: true
+
+### eval
+stage: sft
+do_train: false
+do_predict: true
+max_samples: 50
+cutoff_len: 32192
+overwrite_cache: true
+
+
+eval_dataset:
+  - glm_eval
+
+preprocessing_num_workers: 16
+dataloader_num_workers: 4
+dataset_dir: data
+enable_thinking: false
+packing: false
+
+report_to: none
+run_name: test-glm-16-eval
+per_device_eval_batch_size: 4
+predict_with_generate: true
+ddp_timeout: 180000000
+
+fsdp_config:
+  fsdp_auto_wrap_policy: TRANSFORMER_BASED_WRAP
+  fsdp_backward_prefetch: BACKWARD_PRE
+  fsdp_forward_prefetch: false
+  fsdp_cpu_ram_efficient_loading: true
+  fsdp_offload_params: false           # offload param to CPU if memory constrained
+  fsdp_sharding_strategy: FULL_SHARD  # partition params, grads, optimizer states
+  fsdp_state_dict_type: FULL_STATE_DICT
+  fsdp_sync_module_states: true
+  fsdp_use_orig_params: true
+

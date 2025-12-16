@@ -1,0 +1,65 @@
+finetuning_type: lora
+model_name_or_path: zai-org/GLM-4.5-Air
+trust_remote_code: true
+template: glm4_moe
+stage: sft
+do_train: true
+bf16: true
+output_dir: saves/GLM-4.5-Air/lora/traces-test
+save_steps: 300
+save_total_limit: 2
+flash_attn: fa2
+gradient_checkpointing: true
+#shift_attn: true # not supported
+#pure_bf16: true
+
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 1
+create_new_adapter: true
+cutoff_len: 64132 # 20k is the limit for now
+
+quantization_bit: 4
+quantization_method: bnb
+double_quantization: true
+
+dataset:
+  - traces
+
+val_size: 0.1
+
+preprocessing_num_workers: 16
+dataloader_num_workers: 4
+dataset_dir: data
+
+enable_thinking: true
+plot_loss: true
+
+learning_rate: 5e-5
+logging_steps: 5
+
+lora_alpha: 4
+lora_dropout: 0.05
+lora_rank: 4
+lora_target: 'all'
+
+lr_scheduler_type: cosine
+warmup_steps: 50
+mask_history: false
+max_grad_norm: 1.0
+max_samples: 100
+num_train_epochs: 1.0
+packing: false
+
+#report_to: wandb
+#run_name: traces-glm-test
+
+resize_vocab: false
+train_on_prompt: false
+
+per_device_eval_batch_size: 1
+eval_steps: 120
+save_strategy: steps
+eval_strategy: steps
+
+
+deepspeed: examples/deepspeed/ds_z3_config.json
